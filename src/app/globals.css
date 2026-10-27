@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: 'IBM Plex Sans', 'Noto Sans TC Variable', 'PingFang TC', 'Hiragino Sans CNS',
+    'Noto Sans CJK TC', 'Microsoft JhengHei', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --color-bg: #0c0e0c;
+  --color-panel: #141814;
+  --color-inset: #0e100e;
+  --color-chip: #232a23;
+  --color-line: #2c342c;
+  --color-ink: #f4f1ea;
+  --color-muted: #b7b2a8;
+  --color-faint: #8a857c;
+  --color-gold: #e0b15a;
+  --color-gold-soft: #f0d7a2;
+  --color-rose: #e7b1a6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(224, 177, 90, 0.35);
+  color: #f4f1ea;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: #f4f1ea;
+  caret-color: #f4f1ea;
+  box-shadow: 0 0 0 1000px #0e100e inset;
+}
+
+.hero-wash {
+  background-image:
+    radial-gradient(ellipse 55% 70% at 100% -10%, rgba(224, 177, 90, 0.14), transparent 55%),
+    linear-gradient(to right, rgba(244, 241, 234, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244, 241, 234, 0.04) 1px, transparent 1px);
+  background-size: auto, 72px 72px, 72px 72px;
+  mask-image: linear-gradient(to bottom, #000 50%, transparent);
+}
