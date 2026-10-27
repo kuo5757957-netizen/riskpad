@@ -11,7 +11,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-col gap-1 sm:items-end">
           <Link href="/#disclaimer" className="hover:text-ink">
-            使用聲明
+            免責聲明
           </Link>
           <p>計算在你的瀏覽器內完成。</p>
         </div>

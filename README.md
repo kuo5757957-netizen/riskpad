@@ -40,11 +40,12 @@ R = 有利方向價差 ÷ |進場 − 停損|
 
 ## 本地執行
 
-需要 Node.js 22。
+需要 Node.js 22。ESLint 仍使用 TypeScript 6 的程式 API，所以開發依賴裡的 `typescript` 指向 `@typescript/typescript6`，TypeScript 7 編譯器是 `@typescript/native`。
 
 ```bash
 npm install
 npm test
+npm run lint
 npm run dev
 ```
 

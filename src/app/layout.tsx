@@ -6,6 +6,7 @@ import '@fontsource/ibm-plex-sans/latin-600.css';
 import '@fontsource/ibm-plex-mono/latin-400.css';
 import '@fontsource/ibm-plex-mono/latin-500.css';
 import '@fontsource-variable/noto-sans-tc';
+import { DisclaimerBanner } from '@/components/Disclaimer';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { getSiteUrl } from '@/lib/site';
@@ -57,7 +58,7 @@ const jsonLd = {
   name: 'RiskPad',
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Any',
-  inLanguage: 'zh-Hant',
+  inLanguage: 'zh-TW',
   url: `${siteUrl}/`,
   description,
   offers: {
@@ -69,7 +70,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="zh-Hant">
+    <html lang="zh-TW">
       <body className="bg-bg font-sans text-ink antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <noscript>
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           </p>
         </noscript>
         <SiteHeader />
+        <DisclaimerBanner />
         {children}
         <SiteFooter />
       </body>

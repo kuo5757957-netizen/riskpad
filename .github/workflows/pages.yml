@@ -33,6 +33,9 @@ jobs:
       - name: Test formulas
         run: npm test
 
+      - name: Lint
+        run: npm run lint
+
       - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
