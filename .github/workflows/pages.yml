@@ -36,6 +36,10 @@ jobs:
       - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          # Create the Pages site on the first run when the token is allowed to.
+          # If this is refused, enable Settings → Pages → Source → GitHub Actions once.
+          enablement: true
 
       - name: Build static export
         run: npm run build
