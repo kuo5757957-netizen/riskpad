@@ -11,5 +11,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 1,
     },
+    {
+      url: `${getSiteUrl()}/flowpad/`,
+      lastModified: new Date('2026-10-29'),
+      changeFrequency: 'hourly',
+      priority: 0.4,
+    },
   ];
 }

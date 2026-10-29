@@ -1,0 +1,62 @@
+# Refresh FlowPad market JSON, then redeploy the existing Pages workflow.
+# pages.yml is unchanged. A GITHUB_TOKEN push does not start other workflows,
+# so this dispatches "Deploy GitHub Pages" only after a data commit.
+
+name: Refresh FlowPad data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: refresh-flowpad-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch market snapshot
+        run: |
+          cd public/flowpad
+          python3 scripts/fetch_bybit.py
+
+      - name: Commit data if changed
+        id: commit
+        run: |
+          git switch -C main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/flowpad/data/market.json public/flowpad/data/signals.json public/flowpad/data/meta.json
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No data changes"
+            exit 0
+          fi
+          git commit -m "chore(flowpad): refresh market snapshot"
+          git pull --rebase --no-edit origin main
+          git push origin main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Redeploy GitHub Pages
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
