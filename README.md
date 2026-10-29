@@ -92,6 +92,14 @@ npm run build
 
 若第一次推送時 Pages 尚未啟用，該次 Actions 會在設定頁面之前失敗。啟用來源後，到 Actions 重新執行「Deploy GitHub Pages」即可。
 
+## FlowPad
+
+資金流儀表板是獨立的靜態頁，放在 `public/flowpad/`（`index.html`、`css/`、`js/`、`data/`、`scripts/`、`.nojekyll`）。Next 靜態輸出會把 `public/` 原樣複製到 `out/`，因此跟 RiskPad 同一份 Pages 產物一起上線，網址是：
+
+<https://kuo5757957-netizen.github.io/riskpad/flowpad/>
+
+RiskPad 的計算頁、公式與 `pages.yml` 不變。資料更新在 `.github/workflows/refresh-flowpad-data.yml`：每 30 分鐘進入 `public/flowpad` 執行 `scripts/fetch_bybit.py`，只有 JSON 有變才提交，再觸發既有的 Deploy GitHub Pages（`GITHUB_TOKEN` 的推送不會自動啟動其他工作流程）。
+
 ## 聲明
 
 本站僅供教育與自行試算，非投資建議、非代操，也不提供交易訊號。槓桿與合約可能損失全部保證金。約略強平價不是交易所的官方公式。

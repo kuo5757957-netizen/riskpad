@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlowPad 資金流儀表板</title>
+  <meta name="description" content="FlowPad：Bybit USDT 永續資金流／異常觀察／趨勢卡／推薦榜示意儀表板。教育用途，非投資建議。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo">FP</div>
+      <div>
+        <h1>FlowPad 資金流儀表板</h1>
+        <p>Bybit USDT 永續 · 透明規則 MVP · 非投資建議</p>
+      </div>
+    </div>
+    <div class="meta-bar">
+      <span class="chip" id="chip-source"><strong>來源</strong> —</span>
+      <span class="chip" id="chip-time"><strong>更新</strong> —</span>
+      <span class="chip" id="chip-count"><strong>標的</strong> —</span>
+      <span class="chip" id="chip-btc"><strong>BTC</strong> —</span>
+      <button class="tab" id="btn-reload" type="button" style="padding:6px 12px">重新載入 JSON</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="load-error" class="note" style="color:var(--short);margin-bottom:8px"></div>
+
+    <nav class="tabs" aria-label="分頁">
+      <button class="tab active" data-tab="anomaly" type="button">OI／異常警報</button>
+      <button class="tab" data-tab="trend" type="button">趨勢訊號</button>
+      <button class="tab" data-tab="tickers" type="button">幣種一覽</button>
+      <button class="tab" data-tab="rank" type="button">推薦榜</button>
+      <button class="tab" data-tab="whale" type="button">巨鯨象限</button>
+      <button class="tab" data-tab="rules" type="button">說明</button>
+    </nav>
+
+    <section class="panel active" id="panel-anomaly">
+      <div class="panel-head">
+        <div>
+          <h2>異常警報（觀察卡）</h2>
+          <p>階段：確認突破／蓄勢待發／動能加速。分桶：看漲／看跌／觀察中。這不是喊單，是「正在異動」的觀察清單。</p>
+        </div>
+      </div>
+      <div class="filters">
+        <select id="anomaly-bucket">
+          <option value="all">全部分桶</option>
+          <option value="看漲">看漲</option>
+          <option value="看跌">看跌</option>
+          <option value="觀察中">觀察中</option>
+        </select>
+        <input id="anomaly-q" placeholder="搜尋幣種 e.g. DOGE" />
+      </div>
+      <div class="grid" id="anomaly-grid"></div>
+    </section>
+
+    <section class="panel" id="panel-trend">
+      <div class="panel-head">
+        <div>
+          <h2>趨勢訊號卡</h2>
+          <p>方向＋週期（5m／15m）＋狀態（止盈／止損／平保／持有中）。進場／停損／目標為 24h 波動透明近似，非專有賽克斯公式。</p>
+        </div>
+      </div>
+      <div class="filters">
+        <select id="trend-tf">
+          <option value="all">全部週期</option>
+          <option value="15m">15m</option>
+          <option value="5m">5m</option>
+        </select>
+        <select id="trend-side">
+          <option value="all">多空</option>
+          <option value="long">多</option>
+          <option value="short">空</option>
+        </select>
+        <input id="trend-q" placeholder="搜尋幣種" />
+      </div>
+      <div class="grid" id="trend-grid"></div>
+    </section>
+
+    <section class="panel" id="panel-tickers">
+      <div class="panel-head">
+        <div>
+          <h2>幣種一覽</h2>
+          <p>線性 USDT 永續快照（依 24h 成交額排序）。</p>
+        </div>
+      </div>
+      <div class="filters">
+        <input id="ticker-q" placeholder="搜尋幣種" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>幣種</th>
+              <th>最新</th>
+              <th>24h</th>
+              <th>成交額</th>
+              <th>OI 名義</th>
+              <th>資金費</th>
+            </tr>
+          </thead>
+          <tbody id="ticker-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-rank">
+      <div class="panel-head">
+        <div>
+          <h2>推薦榜（近似分數）</h2>
+          <p>權重概念：OI＋CVD（CVD 本版為 0）、動能、極端資費逆向、相對 BTC、24h 結構。標示為 approximate／demo。</p>
+        </div>
+      </div>
+      <div class="filters">
+        <select id="rank-side">
+          <option value="all">分數高→低</option>
+          <option value="long">偏多</option>
+          <option value="short">偏空（分數低→高）</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>幣種</th>
+              <th>分數</th>
+              <th>強度</th>
+              <th>偏向</th>
+              <th>24h</th>
+              <th>成交額</th>
+              <th>OI</th>
+            </tr>
+          </thead>
+          <tbody id="rank-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-whale">
+      <div class="panel-head">
+        <div>
+          <h2>巨鯨象限（示意）</h2>
+          <p>持倉變化 × 價格變化。15m／30m 僅觀察；1H 才標事件。本 MVP 的 OI 變化為活躍度代理，非完整歷史增量。</p>
+        </div>
+      </div>
+      <div class="quad">
+        <div class="cell"><h3>持倉↑ 價格↑</h3><p>多頭共振示意</p></div>
+        <div class="cell"><h3>持倉↑ 價格↓</h3><p>空頭建倉／下跌示意</p></div>
+        <div class="cell"><h3>持倉↓ 價格↑</h3><p>空頭回補／上漲示意</p></div>
+        <div class="cell"><h3>持倉↓ 價格↓</h3><p>多頭減倉／下跌示意</p></div>
+      </div>
+      <div class="filters">
+        <label style="color:var(--muted);font-size:.85rem;display:flex;gap:8px;align-items:center">
+          <input type="checkbox" id="whale-1h" /> 只看 1H「持倉先行」事件
+        </label>
+      </div>
+      <div class="grid" id="whale-grid"></div>
+    </section>
+
+    <section class="panel" id="panel-rules">
+      <div class="panel-head">
+        <div>
+          <h2>規則說明（FlowPad 透明近似）</h2>
+          <p>品牌與介面為原創。規則「概念」對齊常見資金流儀表板公開說明；公式為自寫近似，並在資料中標記 approximate。</p>
+        </div>
+      </div>
+      <div class="callout">
+        目標執行場：<strong>Bybit</strong> 線性 USDT 永續。抓數腳本優先呼叫 Bybit API；若部署環境被地區封鎖，會自動改走 OKX 後備並在頂部標示。CVD／官方多空比／清算在僅有交易所公開 REST 時多半不可用，分數會標 demo。
+      </div>
+      <div class="rules">
+        <h3>1. 異常警報</h3>
+        <ul>
+          <li><code>確認突破</code>：波動與成交同向抬升</li>
+          <li><code>蓄勢待發</code>：成交活躍但價格尚未大幅展開</li>
+          <li><code>動能加速</code>：價格已明顯延伸＋高成交 → 追價風險提示</li>
+          <li>分桶：看漲／看跌／觀察中；卡片含失效參考提示；標「非喊單」</li>
+        </ul>
+        <h3>2. 趨勢訊號狀態（前端）</h3>
+        <ul>
+          <li>多：價 ≥ 止盈 → 止盈；≤ 停損 → 止損；相對進場 ≥ 0.5R → 平保</li>
+          <li>空：對稱；缺止盈時以 1R 代替</li>
+          <li>進場／停損／目標：由 24h 高低區間透明推得（非專有公式）</li>
+        </ul>
+        <h3>3. 巨鯨象限</h3>
+        <ul>
+          <li>概念：OI 變化 × 價格變化四象限</li>
+          <li>15m／30m 觀察；1H 才標「持倉先行、價格未過度擴張」事件</li>
+        </ul>
+        <h3>4. 推薦榜分數（約 ±100）</h3>
+        <ul>
+          <li>OI 分位、動能、極端資費逆向、相對 BTC、24h 結構位置</li>
+          <li>CVD／多空比／清算：本版 stub＝0，並在資料 notes 註明</li>
+          <li>單日跌幅 ≤ -20%：軟性砍多、壓低分數</li>
+        </ul>
+        <h3>重新整理資料</h3>
+        <ul>
+          <li>本機：在 <code>public/flowpad</code> 執行 <code>python3 scripts/fetch_bybit.py</code></li>
+          <li>預覽：同一目錄 <code>python3 -m http.server 8765</code>，開啟 <code>http://127.0.0.1:8765/</code></li>
+          <li>線上：GitHub Actions 每 30 分鐘重抓 JSON，有變才提交並重新部署本頁</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="footer">
+      <a href="../">RiskPad</a> · FlowPad MVP · 教育用途 · 非投資建議、非代操 · 與交易所官方無關 · 請自行驗證數據與風險
+    </p>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>

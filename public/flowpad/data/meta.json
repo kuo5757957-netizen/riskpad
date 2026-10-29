@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-10-29T22:41:50.254909+08:00",
+  "generatedAtLabel": "2026-10-29 22:41:50 Asia/Shanghai",
+  "source": "okx-fallback",
+  "count": 512,
+  "errors": [
+    "bybit: HTTP Error 403: Forbidden"
+  ],
+  "schema": "flowpad-market-v1",
+  "venueTarget": "bybit-linear-usdt",
+  "notes": [
+    "Prefer Bybit; OKX fallback only when Bybit HTTP fails (e.g. CloudFront geo-block).",
+    "CVD / official L/S / liquidations not included from venue REST alone."
+  ]
+}
