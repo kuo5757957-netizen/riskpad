@@ -1,9 +1,11 @@
 {
-  "generatedAt": "2026-11-06T07:06:52.651826+08:00",
-  "generatedAtLabel": "2026-11-06 07:06:52 Asia/Shanghai",
-  "source": "bybit",
-  "count": 826,
-  "errors": [],
+  "generatedAt": "2026-11-06T08:00:29.874839+08:00",
+  "generatedAtLabel": "2026-11-06 08:00:29 Asia/Shanghai",
+  "source": "okx-fallback",
+  "count": 528,
+  "errors": [
+    "bybit: HTTP Error 403: Forbidden"
+  ],
   "schema": "flowpad-market-v1",
   "venueTarget": "bybit-linear-usdt",
   "notes": [
