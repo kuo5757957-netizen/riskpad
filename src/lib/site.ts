@@ -14,3 +14,10 @@ export function getSiteUrl(): string {
   const basePath = normalizeBasePath(process.env.NEXT_PUBLIC_BASE_PATH);
   return `https://kuo5757957-netizen.github.io${basePath || '/riskpad'}`;
 }
+
+/** Root-relative URL for a static file outside the Next router, including the Pages base path. */
+export function withBasePath(path: string): string {
+  const base = normalizeBasePath(process.env.NEXT_PUBLIC_BASE_PATH);
+  const suffix = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${suffix}`;
+}

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { getSiteUrl, normalizeBasePath } from './site';
+import { getSiteUrl, normalizeBasePath, withBasePath } from './site';
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -13,6 +13,19 @@ describe('normalizeBasePath', () => {
     expect(normalizeBasePath('riskpad')).toBe('/riskpad');
     expect(normalizeBasePath('/riskpad')).toBe('/riskpad');
     expect(normalizeBasePath('/riskpad/')).toBe('/riskpad');
+  });
+});
+
+describe('withBasePath', () => {
+  it('prefixes the project Pages path used by FlowPad', () => {
+    vi.stubEnv('NEXT_PUBLIC_BASE_PATH', '/riskpad');
+    expect(withBasePath('/flowpad/')).toBe('/riskpad/flowpad/');
+    expect(withBasePath('flowpad/')).toBe('/riskpad/flowpad/');
+  });
+
+  it('stays at the site root when no base path is configured', () => {
+    vi.stubEnv('NEXT_PUBLIC_BASE_PATH', '');
+    expect(withBasePath('/flowpad/')).toBe('/flowpad/');
   });
 });
 
