@@ -16,6 +16,13 @@ const siteUrl = getSiteUrl();
 const title = 'RiskPad｜倉位風險計算機：合約倉位計算與風險報酬比';
 const description =
   '免費倉位風險計算機，在瀏覽器計算合約倉位大小、風險報酬比與約略強平價。不提供訊號、不需帳號。教育用途，非投資建議、非代操。';
+const ogImage = {
+  url: `${siteUrl}/og.png`,
+  width: 1200,
+  height: 630,
+  alt: 'RiskPad 倉位風險計算機',
+  type: 'image/png',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(`${siteUrl}/`),
@@ -33,11 +40,13 @@ export const metadata: Metadata = {
     siteName: 'RiskPad',
     title,
     description,
+    images: [ogImage],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title,
     description,
+    images: [ogImage],
   },
   robots: {
     index: true,
@@ -60,6 +69,7 @@ const jsonLd = {
   operatingSystem: 'Any',
   inLanguage: 'zh-TW',
   url: `${siteUrl}/`,
+  image: ogImage.url,
   description,
   offers: {
     '@type': 'Offer',

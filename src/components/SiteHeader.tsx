@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { withBasePath } from '@/lib/site';
 
 const links = [
   { href: '/#position', label: '倉位大小' },
@@ -6,6 +7,8 @@ const links = [
   { href: '/#liquidation', label: '約略強平價' },
   { href: '/#howto', label: '使用方式' },
 ] as const;
+
+const flowpadHref = withBasePath('/flowpad/');
 
 export function SiteHeader() {
   return (
@@ -27,12 +30,15 @@ export function SiteHeader() {
           </svg>
           <span className="text-[15px] font-medium tracking-wide">RiskPad</span>
         </Link>
-        <nav aria-label="頁面" className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+        <nav aria-label="頁面" className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="hover:text-ink">
               {link.label}
             </Link>
           ))}
+          <a href={flowpadHref} className="font-medium text-gold-soft hover:text-gold">
+            FlowPad 資金流
+          </a>
         </nav>
       </div>
     </header>

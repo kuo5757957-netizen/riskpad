@@ -1,6 +1,7 @@
 import { formatNumber, formatRiskRewardRatio } from '@/lib/format';
 import { calcLiquidation, calcPositionSize, calcRiskReward } from '@/lib/formulas';
 import { liquidationSample, positionSample, riskRewardSample } from '@/lib/samples';
+import { withBasePath } from '@/lib/site';
 
 function must<T>(result: { ok: true; value: T } | { ok: false }): T {
   if (!result.ok) throw new Error('RiskPad sample failed to calculate');
@@ -56,6 +57,12 @@ export function Hero() {
             </a>
             <a href="#howto" className="rounded-full border border-line px-4 py-2 text-sm text-ink">
               看怎麼用
+            </a>
+            <a
+              href={withBasePath('/flowpad/')}
+              className="rounded-full border border-gold/60 px-4 py-2 text-sm text-gold-soft"
+            >
+              FlowPad 資金流
             </a>
           </div>
           <ul className="mt-8 flex flex-wrap gap-2 text-xs text-muted">
